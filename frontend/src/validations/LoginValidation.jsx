@@ -7,7 +7,7 @@ function Validation(values) {
     error.email = "Enter your email address"
   }
   else if(!email_pattern.test(values.email)) {
-    error.email = "Email didn't match"
+    error.email = "Incorrect email address"
   } else {
     error.email = ""
   }

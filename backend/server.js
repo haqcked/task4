@@ -10,12 +10,12 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "users"
+  database: "userdata"
 
 })
 
 app.get('/', (req, res) => {
-  const sql = "SELECT * FROM users";
+  const sql = "SELECT * FROM userdata";
   db.query(sql, (err, result) => {
     if(err) return res.json({Message: 'Error in server'});
     return res.json(result);
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/sign-up', (req, res) => {
-  const sql = "INSERT INTO users (`name`, `email`, `password`) VALUES (?)";
+  const sql = "INSERT INTO userdata (`name`, `email`, `password`) VALUES (?)";
   const values = [
     req.body.name,
     req.body.email,
@@ -38,7 +38,7 @@ app.post('/sign-up', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-  const sql = "SELECT * FROM users WHERE `email` = ? AND `password` = ?";
+  const sql = "SELECT * FROM userdata WHERE `email` = ? AND `password` = ?";
   db.query(sql, [req.body.email, req.body.password], (err, data) => {
     if(err) {
       return res.json(err)
@@ -52,7 +52,7 @@ app.post('/login', (req, res) => {
 })
 
 app.delete('/delete/:id', (req, res) => {
-  const sql = "DELETE FROM users WHERE ID = ?";
+  const sql = "DELETE FROM userdata WHERE ID = ?";
   const id = req.params.id;
   db.query(sql, [id], (err, data) => {
     if(err) return res.json({Message: "Error in the server"});
@@ -64,7 +64,7 @@ app.put('/update-status/:id', (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
-  const sql = "UPDATE users SET status = ? WHERE ID = ?";
+  const sql = "UPDATE userdata SET status = ? WHERE ID = ?";
   db.query(sql, [status, id], (err, data) => {
     if (err) return res.json({ Message: "Error in the server" });
     return res.json(data);
@@ -74,10 +74,10 @@ app.put('/update-status/:id', (req, res) => {
 app.delete('/delete-multiple', (req, res) => {
   const { ids } = req.body;
   if (!ids || !Array.isArray(ids) || ids.length === 0) {
-    return res.status(400).json({ Message: 'Invalid request. Please provide an array of user IDs to delete.' });
+    return res.status(400).json({ Message: 'Invalid request. Please provide an array of userdata IDs to delete.' });
   }
 
-  const sql = "DELETE FROM users WHERE ID IN (?)";
+  const sql = "DELETE FROM userdata WHERE ID IN (?)";
   db.query(sql, [ids], (err, data) => {
     if (err) return res.status(500).json({ Message: 'Error in the server' });
     return res.json(data);
@@ -91,7 +91,7 @@ app.put('/update-multiple-status', (req, res) => {
     return res.status(400).json({ Message: 'Invalid request. Please provide an array of user IDs and status to update.' });
   }
 
-  const sql = "UPDATE users SET status = ? WHERE ID IN (?)";
+  const sql = "UPDATE userdata SET status = ? WHERE ID IN (?)";
 
   db.query(sql, [status, ids], (err, data) => {
     if (err) {
@@ -104,5 +104,5 @@ app.put('/update-multiple-status', (req, res) => {
 
 
 app.listen(8081, () => {
-  console.log("Listening");
-})
+  console.log("listening");
+});

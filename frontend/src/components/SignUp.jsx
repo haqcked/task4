@@ -26,7 +26,11 @@ function SignUp() {
     setErrors(validationErrors);
     console.log(values);
     if(validationErrors.name === "" && validationErrors.email === "" && validationErrors.password === "") {
-      axios.post('http://localhost:8081/sign-up', values)
+      axios.post('http://localhost:8081/sign-up', JSON.stringify(values), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
       .then(res => {
         navigate('/login');
         Swal.fire({

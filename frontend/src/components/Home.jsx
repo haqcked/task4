@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import Switch from 'react-switch';
 import { AuthContext } from '../context/AuthContext';
 import formatDate from '../utilities/DateFormat';
-import handleDelete from '../utilities/HandleDelete';
+// import handleDelete from '../utilities/HandleDelete';
 import handleStatusToggle from '../utilities/HandleStatusToggle';
 import handleDeleteAll from '../utilities/HandleDeleteAll';
 import handleStatusToggleAll from '../utilities/HandleStatusToggleAll';
@@ -44,11 +44,25 @@ function Home() {
     });
   };
 
+  // useEffect(() => {
+  //   // axios.get('http://localhost:8081/')
+  //   axios.get('https://firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com/')
+  //   .then(res => setData(res.data))
+  //   .catch(err => console.log(err));
+  // }, [])
+
   useEffect(() => {
-    axios.get('http://localhost:8081/')
-    .then(res => setData(res.data))
-    .catch(err => console.log(err));
-  }, [])
+    axios.get('http://firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com/')
+      .then((res) => {
+        setData(res.data);
+        console.log(res.data); // Corrected the log statement
+      })
+      .catch((err) => {
+        console.log(err);
+        console.error('AxiosError:', err); // Corrected the log statement
+      });
+  }, []);
+
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });

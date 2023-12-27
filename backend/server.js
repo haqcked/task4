@@ -3,13 +3,26 @@ import mysql from "mysql";
 import cors from "cors";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com', // Replace with your actual client app origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+}));
 app.use(express.json());
 
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "userdata"
+
+// })
+
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
+  host: "firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com",
+  user: "admin",
+  password: "7aDZW8ekPKX5cmQldj9V",
   database: "userdata"
 
 })
@@ -103,6 +116,11 @@ app.put('/update-multiple-status', (req, res) => {
 });
 
 
-app.listen(8081, () => {
+app.listen(3306, () => {
   console.log("listening");
 });
+
+// db identifier: haqcked-db
+// master username: admin
+// Master password: 7aDZW8ekPKX5cmQldj9V
+// Endpoint: firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com

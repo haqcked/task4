@@ -27,7 +27,7 @@ function login() {
     setErrors(validationErrors);
 
     if (validationErrors.email === "" && validationErrors.password === "") {
-      axios.post(`http://firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com/login`, values)
+      axios.post('http://localhost:8081/login', values)
         .then(res => {
           if (res.data === "Success") {
             dispatch({ type: 'LOGIN', payload: values });

@@ -26,7 +26,7 @@ function SignUp() {
     setErrors(validationErrors);
     console.log(values);
     if(validationErrors.name === "" && validationErrors.email === "" && validationErrors.password === "") {
-      axios.post('http://firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com/sign-up', JSON.stringify(values), {
+      axios.post('http://localhost:8081/sign-up', JSON.stringify(values), {
         headers: {
           'Content-Type': 'application/json'
         }

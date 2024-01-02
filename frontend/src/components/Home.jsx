@@ -44,24 +44,11 @@ function Home() {
     });
   };
 
-  // useEffect(() => {
-  //   // axios.get('http://localhost:8081/')
-  //   axios.get('https://firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com/')
-  //   .then(res => setData(res.data))
-  //   .catch(err => console.log(err));
-  // }, [])
-
   useEffect(() => {
-    axios.get('http://firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com/')
-      .then((res) => {
-        setData(res.data);
-        console.log(res.data); // Corrected the log statement
-      })
-      .catch((err) => {
-        console.log(err);
-        console.error('AxiosError:', err); // Corrected the log statement
-      });
-  }, []);
+    axios.get('http://localhost:8081/')
+    .then(res => setData(res.data))
+    .catch(err => console.log(err));
+  }, [])
 
 
   const handleLogout = () => {

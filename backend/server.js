@@ -1,31 +1,33 @@
 import express from "express";
-import mysql from "mysql";
+// import mysql from "mysql";
 import cors from "cors";
+import pkg from "pg";
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "userdata"
-
-})
-
-// const db = mysql.createConnection({
-//   host: "firstdb.cdsygs0ao1t2.eu-north-1.rds.amazonaws.com",
-//   user: "admin",
-//   password: "7aDZW8ekPKX5cmQldj9V",
-//   database: "userdata"
-
+const { Pool } = pkg;
+// const pool = new Pool({
+//   user: "nlikatst",
+//   host: "john.db.elephantsql.com",
+//   database: "nlikatst",
+//   password: "u-QhdH-zjwHKBCsEMQVbQ1OloPUYObYf",
+//   port: 5432,
 // })
+
+const pool = new Pool({
+  user: "postgres",
+  host: "localhost",
+  database: "userdata",
+  password: "test",
+  port: 5432,
+})
 
 app.get('/', (req, res) => {
   const sql = "SELECT * FROM userdata";
-  db.query(sql, (err, result) => {
-    if(err) return res.json({Message: 'Error in server'});
+  pool.query(sql, (err, result) => {
+    if(err) return res.json({Message: 'Error in server', err});
     return res.json(result);
   })
 })
@@ -37,7 +39,7 @@ app.post('/sign-up', (req, res) => {
     req.body.email,
     req.body.password,
   ]
-  db.query(sql, [values], (err, data) => {
+  pool.query(sql, [values], (err, data) => {
     if(err) {
       return res.json(err)
     }
@@ -47,7 +49,7 @@ app.post('/sign-up', (req, res) => {
 
 app.post('/login', (req, res) => {
   const sql = "SELECT * FROM userdata WHERE `email` = ? AND `password` = ?";
-  db.query(sql, [req.body.email, req.body.password], (err, data) => {
+  pool.query(sql, [req.body.email, req.body.password], (err, data) => {
     if(err) {
       return res.json(err)
     }
@@ -62,7 +64,7 @@ app.post('/login', (req, res) => {
 app.delete('/delete/:id', (req, res) => {
   const sql = "DELETE FROM userdata WHERE ID = ?";
   const id = req.params.id;
-  db.query(sql, [id], (err, data) => {
+  pool.query(sql, [id], (err, data) => {
     if(err) return res.json({Message: "Error in the server"});
     return res.json(data);
   })
@@ -73,7 +75,7 @@ app.put('/update-status/:id', (req, res) => {
   const { status } = req.body;
 
   const sql = "UPDATE userdata SET status = ? WHERE ID = ?";
-  db.query(sql, [status, id], (err, data) => {
+  pool.query(sql, [status, id], (err, data) => {
     if (err) return res.json({ Message: "Error in the server" });
     return res.json(data);
   });
@@ -86,7 +88,7 @@ app.delete('/delete-multiple', (req, res) => {
   }
 
   const sql = "DELETE FROM userdata WHERE ID IN (?)";
-  db.query(sql, [ids], (err, data) => {
+  pool.query(sql, [ids], (err, data) => {
     if (err) return res.status(500).json({ Message: 'Error in the server' });
     return res.json(data);
   });
@@ -101,7 +103,7 @@ app.put('/update-multiple-status', (req, res) => {
 
   const sql = "UPDATE userdata SET status = ? WHERE ID IN (?)";
 
-  db.query(sql, [status, ids], (err, data) => {
+  pool.query(sql, [status, ids], (err, data) => {
     if (err) {
       return res.status(500).json({ Message: 'Error in the server' });
     }

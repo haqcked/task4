@@ -47,6 +47,7 @@ function login() {
               title: 'Login failed',
               text: 'Invalid email or password'
             });
+            console.log(res)
           }
         })
         .catch((err) => {
